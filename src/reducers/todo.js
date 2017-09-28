@@ -4,7 +4,7 @@ import {
   getTodos,
   updateTodo,
 } from '../lib/todoServices';
-import { showMessage } from './messsages';
+import { hideMessage, showMessage } from './messsages';
 
 const initState = {
   todos: [],
@@ -12,10 +12,10 @@ const initState = {
 };
 
 const CURRENT_UPDATE = 'CURRENT_UPDATE';
-export const TODOS_LOAD = 'TODOS_LOAD';
-export const TODO_ADD = 'TODO_ADD';
-export const TODO_REPLACE = 'TODO_REPLACE';
-export const TODO_REMOVE = 'TODO_REMOVE';
+const TODOS_LOAD = 'TODOS_LOAD';
+const TODO_ADD = 'TODO_ADD';
+const TODO_REPLACE = 'TODO_REPLACE';
+const TODO_REMOVE = 'TODO_REMOVE';
 
 export const addTodo = todo => ({ type: TODO_ADD, payload: todo });
 export const loadTodos = todos => ({ type: TODOS_LOAD, payload: todos });
@@ -51,14 +51,26 @@ export default (state = initState, action) => {
   }
 };
 
+const dispatchHideMessage = (dispatch, timeout = 1000) => {
+  setTimeout(() => {
+    dispatch(hideMessage());
+  }, timeout);
+};
+
+const dispatchAction = (dispatch, action) => {
+  const state = dispatch(action);
+  dispatchHideMessage(dispatch);
+  return state;
+};
+
 export const fetchTodos = () => dispatch => {
   dispatch(showMessage('Loading Todos'));
-  getTodos().then(todos => dispatch(loadTodos(todos)));
+  getTodos().then(res => dispatchAction(dispatch, loadTodos(res)));
 };
 
 export const saveTodo = name => dispatch => {
   dispatch(showMessage(`Saving “${name}”`));
-  createTodo(name).then(todo => dispatch(addTodo(todo)));
+  createTodo(name).then(res => dispatchAction(dispatch, addTodo(res)));
 };
 
 export const toggleTodo = id => (dispatch, getState) => {
@@ -66,12 +78,12 @@ export const toggleTodo = id => (dispatch, getState) => {
   const { todos } = getState().todo;
   const todo = todos.find(t => t.id === id);
   const toggled = { ...todo, isComplete: !todo.isComplete };
-  updateTodo(toggled).then(res => dispatch(replaceTodo(res)));
+  updateTodo(toggled).then(res => dispatchAction(dispatch, replaceTodo(res)));
 };
 
 export const deleteTodo = id => dispatch => {
   dispatch(showMessage('Removing Todo'));
-  destroyTodo(id).then(() => dispatch(removeTodo(id)));
+  destroyTodo(id).then(() => dispatchAction(dispatch, removeTodo(id)));
 };
 
 export const getVisibleTodos = (todos, filter) => {
