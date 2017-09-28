@@ -1,0 +1,22 @@
+extends: airbnb
+parser: babel-eslint
+plugins:
+  - react
+rules:
+  arrow-parens:
+    - error
+    - as-needed
+    - requireForBlockBody: false
+  react/jsx-filename-extension:
+    - 1
+    - extensions:
+      - .js
+      - .jsx
+  react/prop-types: 0
+globals:
+  describe: false
+  document: false
+  expect: false
+  fetch: false
+  it: false
+  test: false
