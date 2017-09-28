@@ -63,27 +63,37 @@ const dispatchAction = (dispatch, action) => {
   return state;
 };
 
-export const fetchTodos = () => dispatch => {
+export const fetchTodos = () => async dispatch => {
   dispatch(showMessage('Loading Todos'));
-  getTodos().then(res => dispatchAction(dispatch, loadTodos(res)));
+  const todos = await getTodos();
+  const state = dispatchAction(dispatch, loadTodos(todos));
+  return state;
 };
 
-export const saveTodo = name => dispatch => {
+export const saveTodo = name => async dispatch => {
   dispatch(showMessage(`Saving “${name}”`));
-  createTodo(name).then(res => dispatchAction(dispatch, addTodo(res)));
+  const todo = await createTodo(name);
+  const state = dispatchAction(dispatch, addTodo(todo));
+  return state;
 };
 
-export const toggleTodo = id => (dispatch, getState) => {
+export const toggleTodo = id => async (dispatch, getState) => {
   dispatch(showMessage('Updating Todo'));
+
   const { todos } = getState().todo;
-  const todo = todos.find(t => t.id === id);
-  const toggled = { ...todo, isComplete: !todo.isComplete };
-  updateTodo(toggled).then(res => dispatchAction(dispatch, replaceTodo(res)));
+  let todo = todos.find(t => t.id === id);
+  todo = { ...todo, isComplete: !todo.isComplete };
+
+  todo = await updateTodo(todo);
+  const state = dispatchAction(dispatch, replaceTodo(todo));
+  return state;
 };
 
-export const deleteTodo = id => dispatch => {
+export const deleteTodo = id => async dispatch => {
   dispatch(showMessage('Removing Todo'));
-  destroyTodo(id).then(() => dispatchAction(dispatch, removeTodo(id)));
+  await destroyTodo(id);
+  const state = dispatchAction(dispatch, removeTodo(id));
+  return state;
 };
 
 export const getVisibleTodos = (todos, filter) => {
