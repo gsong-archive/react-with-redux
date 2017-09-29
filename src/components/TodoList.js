@@ -27,22 +27,20 @@ class TodoList extends Component {
     this.props.fetchTodos();
   }
 
-  render() {
-    return (
-      <div className="Todo-List">
-        <ul>
-          {this.props.todos.map(todo => (
-            <TodoItem
-              key={todo.id}
-              {...todo}
-              deleteItem={this.props.deleteTodo}
-              toggleItem={this.props.toggleTodo}
-            />
-          ))}
-        </ul>
-      </div>
-    );
-  }
+  render = () => (
+    <div className="Todo-List">
+      <ul>
+        {this.props.todos.map(todo => (
+          <TodoItem
+            key={todo.id}
+            {...todo}
+            deleteItem={this.props.deleteTodo}
+            toggleItem={this.props.toggleTodo}
+          />
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default connect(
