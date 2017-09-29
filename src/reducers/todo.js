@@ -28,7 +28,6 @@ export default (state = initState, action) => {
     case TODO_ADD:
       return {
         ...state,
-        currentTodo: '',
         todos: state.todos.concat(action.payload),
       };
     case TODOS_LOAD:

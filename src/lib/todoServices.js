@@ -2,8 +2,7 @@
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
-export const getTodos = () =>
-  fetch(baseUrl).then(res => res.json());
+export const getTodos = () => fetch(baseUrl).then(res => res.json());
 
 export const createTodo = name =>
   fetch(baseUrl, {
