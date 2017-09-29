@@ -1,6 +1,6 @@
 import thunk from 'redux-thunk';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 
 import todoReducer from './reducers/todo';
 import messageReducer from './reducers/messsages';
