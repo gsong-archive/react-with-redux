@@ -45,12 +45,8 @@ li {
   background-color:#61DAFB;
   color:white;
   border: solid 1px #61DAFB;
-  position: absolute;
   text-align: center;
   width:200px;
-  left: 50%;
-  margin-left:-100px;
-  top: 200px;
 }
 
 li span.delete-item {
