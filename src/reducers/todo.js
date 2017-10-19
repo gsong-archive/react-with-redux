@@ -14,14 +14,14 @@ const initState = {
 const CURRENT_UPDATE = 'CURRENT_UPDATE';
 const TODOS_LOAD = 'TODOS_LOAD';
 const TODO_ADD = 'TODO_ADD';
-const TODO_REPLACE = 'TODO_REPLACE';
 const TODO_REMOVE = 'TODO_REMOVE';
+const TODO_REPLACE = 'TODO_REPLACE';
 
 export const addTodo = todo => ({ type: TODO_ADD, payload: todo });
 export const loadTodos = todos => ({ type: TODOS_LOAD, payload: todos });
+export const removeTodo = id => ({ type: TODO_REMOVE, payload: id });
 export const replaceTodo = todo => ({ type: TODO_REPLACE, payload: todo });
 export const updateCurrent = val => ({ type: CURRENT_UPDATE, payload: val });
-export const removeTodo = id => ({ type: TODO_REMOVE, payload: id });
 
 export default (state = initState, action) => {
   switch (action.type) {
@@ -51,7 +51,7 @@ export default (state = initState, action) => {
   }
 };
 
-const dispatchHideMessage = (dispatch, timeout = 1000) => {
+const dispatchHideMessage = (dispatch, timeout = 500) => {
   setTimeout(() => {
     dispatch(hideMessage());
   }, timeout);
@@ -66,15 +66,14 @@ const dispatchAction = (dispatch, action) => {
 export const fetchTodos = () => async dispatch => {
   dispatch(showMessage('Loading Todos'));
   const todos = await getTodos();
-  const state = dispatchAction(dispatch, loadTodos(todos));
-  return state;
+  dispatchAction(dispatch, loadTodos(todos));
 };
 
 export const saveTodo = name => async dispatch => {
   dispatch(showMessage(`Saving “${name}”`));
   const todo = await createTodo(name);
-  const state = dispatchAction(dispatch, addTodo(todo));
-  return state;
+  dispatchAction(dispatch, addTodo(todo));
+  dispatch(updateCurrent(''));
 };
 
 export const toggleTodo = id => async (dispatch, getState) => {
@@ -85,15 +84,13 @@ export const toggleTodo = id => async (dispatch, getState) => {
   todo = { ...todo, isComplete: !todo.isComplete };
 
   todo = await updateTodo(todo);
-  const state = dispatchAction(dispatch, replaceTodo(todo));
-  return state;
+  dispatchAction(dispatch, replaceTodo(todo));
 };
 
 export const deleteTodo = id => async dispatch => {
   dispatch(showMessage('Removing Todo'));
   await destroyTodo(id);
-  const state = dispatchAction(dispatch, removeTodo(id));
-  return state;
+  dispatchAction(dispatch, removeTodo(id));
 };
 
 export const getVisibleTodos = (todos, filter) => {
