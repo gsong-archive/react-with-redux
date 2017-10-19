@@ -7,6 +7,9 @@ rules:
     - error
     - as-needed
     - requireForBlockBody: false
+  function-paren-newline:
+    - error
+    - consistent
   react/jsx-filename-extension:
     - 1
     - extensions:
