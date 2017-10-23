@@ -14,15 +14,18 @@ class TodoForm extends Component {
     this.props.saveTodo(this.props.currentTodo);
   };
 
-  render = () => (
-    <form onSubmit={this.handleSubmit}>
-      <input
-        type="text"
-        onChange={this.handleInputChange}
-        value={this.props.currentTodo}
-      />
-    </form>
-  );
+  render = () => {
+    console.log('Rendering TodoForm...');
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <input
+          type="text"
+          onChange={this.handleInputChange}
+          value={this.props.currentTodo}
+        />
+      </form>
+    );
+  };
 }
 
 export default connect(state => ({ currentTodo: state.todo.currentTodo }), {

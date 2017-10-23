@@ -8,19 +8,22 @@ import {
   toggleTodo,
 } from '../reducers/todo';
 
-const TodoItem = ({ id, name, isComplete, deleteItem, toggleItem }) => (
-  <li>
-    <span className="delete-item">
-      <button onClick={() => deleteItem(id)}>X</button>
-    </span>
-    <input
-      type="checkbox"
-      checked={isComplete}
-      onChange={() => toggleItem(id)}
-    />
-    {name}
-  </li>
-);
+const TodoItem = ({ id, name, isComplete, deleteItem, toggleItem }) => {
+  console.log('Rendering TodoItem...');
+  return (
+    <li>
+      <span className="delete-item">
+        <button onClick={() => deleteItem(id)}>X</button>
+      </span>
+      <input
+        type="checkbox"
+        checked={isComplete}
+        onChange={() => toggleItem(id)}
+      />
+      {name}
+    </li>
+  );
+};
 
 class TodoList extends Component {
   componentDidMount() {
