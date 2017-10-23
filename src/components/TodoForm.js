@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { saveTodo, updateCurrent } from '../reducers/todo';
+import { saveTodo } from '../reducers/todo';
+
+const initState = { currentTodo: '' };
 
 class TodoForm extends Component {
+  state = initState;
+
   handleInputChange = evt => {
-    const val = evt.target.value;
-    this.props.updateCurrent(val);
+    const currentTodo = evt.target.value;
+    this.setState({ currentTodo });
   };
 
   handleSubmit = evt => {
     evt.preventDefault();
-    this.props.saveTodo(this.props.currentTodo);
+    this.props.saveTodo(this.state.currentTodo);
+    this.setState(initState);
   };
 
   render = () => (
@@ -19,13 +24,10 @@ class TodoForm extends Component {
       <input
         type="text"
         onChange={this.handleInputChange}
-        value={this.props.currentTodo}
+        value={this.state.currentTodo}
       />
     </form>
   );
 }
 
-export default connect(state => ({ currentTodo: state.todo.currentTodo }), {
-  saveTodo,
-  updateCurrent,
-})(TodoForm);
+export default connect(null, { saveTodo })(TodoForm);
