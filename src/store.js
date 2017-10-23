@@ -1,4 +1,3 @@
-import thunk from 'redux-thunk';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 
@@ -9,6 +8,9 @@ const reducer = combineReducers({
   todo: todoReducer,
   message: messageReducer,
 });
+
+const thunk = ({ dispatch, getState }) => next => action =>
+  typeof action === 'function' ? action(dispatch, getState) : next(action);
 
 export default createStore(
   reducer,
