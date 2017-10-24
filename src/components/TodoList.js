@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -8,7 +8,14 @@ import {
   toggleTodo,
 } from '../reducers/todo';
 
-class TodoItem extends PureComponent {
+class TodoItem extends Component {
+  shouldComponentUpdate = nextProps =>
+    !(
+      this.props.id === nextProps.id &&
+      this.props.name === nextProps.name &&
+      this.props.isComplete === nextProps.isComplete
+    );
+
   render = () => {
     console.log('Rendering TodoItem...');
     const { id, name, isComplete, deleteItem, toggleItem } = this.props;
