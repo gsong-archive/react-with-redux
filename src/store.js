@@ -9,10 +9,21 @@ const reducer = combineReducers({
   message: messageReducer,
 });
 
+const nothing = () => next => action => next(action);
+
+const logger = ({ getState }) => next => action => {
+  console.group(action.type);
+  console.log('dispatching', action);
+  const result = next(action);
+  console.log('next state', getState());
+  console.groupEnd();
+  return result;
+};
+
 const thunk = ({ dispatch, getState }) => next => action =>
   typeof action === 'function' ? action(dispatch, getState) : next(action);
 
 export default createStore(
   reducer,
-  composeWithDevTools(applyMiddleware(thunk)),
+  composeWithDevTools(applyMiddleware(nothing, thunk, logger)),
 );
