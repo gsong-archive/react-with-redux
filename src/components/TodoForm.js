@@ -8,9 +8,19 @@ const initState = { currentTodo: '' };
 class TodoForm extends Component {
   state = initState;
 
+  componentWillUpdate = (nextProps, nextState) =>
+    console.log('componentWillUpdate', nextState);
+
+  componentDidUpdate = () =>
+    console.log('componentDidUpdate', this.state);
+
   handleInputChange = evt => {
     const currentTodo = evt.target.value;
-    this.setState({ currentTodo });
+    console.group('Setting', { currentTodo });
+    console.log('Before', this.state);
+    this.setState({ currentTodo }, () => console.log('Callback', this.state));
+    console.log('After', this.state);
+    console.groupEnd();
   };
 
   handleSubmit = evt => {
