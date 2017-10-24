@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -8,22 +8,25 @@ import {
   toggleTodo,
 } from '../reducers/todo';
 
-const TodoItem = ({ id, name, isComplete, deleteItem, toggleItem }) => {
-  console.log('Rendering TodoItem...');
-  return (
-    <li>
-      <span className="delete-item">
-        <button onClick={() => deleteItem(id)}>X</button>
-      </span>
-      <input
-        type="checkbox"
-        checked={isComplete}
-        onChange={() => toggleItem(id)}
-      />
-      {name}
-    </li>
-  );
-};
+class TodoItem extends PureComponent {
+  render = () => {
+    console.log('Rendering TodoItem...');
+    const { id, name, isComplete, deleteItem, toggleItem } = this.props;
+    return (
+      <li>
+        <span className="delete-item">
+          <button onClick={() => deleteItem(id)}>X</button>
+        </span>
+        <input
+          type="checkbox"
+          checked={isComplete}
+          onChange={() => toggleItem(id)}
+        />
+        {name}
+      </li>
+    );
+  };
+}
 
 class TodoList extends Component {
   componentDidMount() {
